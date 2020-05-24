@@ -30,6 +30,22 @@ export default {
             v: 0,
             b: 0
         }
+    },
+    phone3 : {
+        language: "italian",
+        bluetooth: false,
+        rollover: false,
+        dragging: false,
+        x: 160,
+        y: 270,
+        w: 50,
+        h: 100,
+        dist: 0,
+        color: {
+            r: 0,
+            v: 255,
+            b: 0
+        }
     }
 
 }
