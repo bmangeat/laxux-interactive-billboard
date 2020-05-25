@@ -93,14 +93,12 @@ draw = () => {
     background(255)
     phones.forEach(e => draggableObject(e))
 
-
     stroke(0, 0, 0)
     fill(30, 255, 255)
     ellipse(bluetoothZone.x, bluetoothZone.y, bluetoothZone.w, bluetoothZone.h)
     createBillboard(billboard);
 
     phones.forEach(e => createIphone(e))
-
 
 }
 
@@ -184,9 +182,12 @@ let createIphone = (p) => {
     rect(p.x + 20, p.y + 5, 12, 2, 4)
 }
 
+/**
+ * @desc Detect if phones are enter in the zone when mouse released
+ * @param p dragging phone
+ */
 let detectBluetoothArea = (p) => {
     p.inRange = (pow(p.x - bluetoothZone.x, 2) / pow((bluetoothZone.w / 2), 2) + pow(p.y - bluetoothZone.y, 2) / pow((bluetoothZone.h / 2), 2)) <= 1
-    console.log(p.language, p.inRange)
 }
 let draggableObject = (p) => {
     p.rollover = mouseX > p.x && mouseX < p.x + p.w && mouseY > p.y && mouseY < p.y + p.h
@@ -198,23 +199,24 @@ let draggableObject = (p) => {
 }
 
 
-function mousePressed() {
-    phones.forEach(e => mousePressedObjectDrag(e))
-}
-
+/**
+ * @desc Determine which phone is clicked
+ * @param p selected phone
+ */
 let mousePressedObjectDrag = (p) => {
     if (mouseX > p.x && mouseX < p.x + p.w && mouseY > p.y && mouseY < p.y + p.h) {
         p.dragging = true
+        console.log(p.language)
 
         offsetX = p.x - mouseX
         offsetY = p.y - mouseY
     }
 }
 
-function mouseReleased() {
-    phones.forEach(e => mouseReleasedObjectDrag(e))
-}
-
+/**
+ * Call when object is released -> determine which phone is closer
+ * @param p dragging phone
+ */
 let mouseReleasedObjectDrag = (p) => {
     p.dragging = false
     p.dist = evaluateDist(p)
@@ -224,7 +226,6 @@ let mouseReleasedObjectDrag = (p) => {
     if (phones[0].inRange) {
         billboard.language = phones[0].language
     }
-
 
     switch (billboard.language) {
         case "english":
@@ -241,6 +242,11 @@ let mouseReleasedObjectDrag = (p) => {
     }
 }
 
+let displayIphone = (p) =>
+{
+
+
+}
 
 /**
  * @desc In order to compare and sort array of phones according to distance
@@ -254,6 +260,14 @@ let compare = (a, b) => {
 
     return 0
 }
+
+function mousePressed() {
+    phones.forEach(e => mousePressedObjectDrag(e))
+}
+function mouseReleased() {
+    phones.forEach(e => mouseReleasedObjectDrag(e))
+}
+
 windowResized = () => resizeCanvas(windowWidth, windowHeight)
 
 setup()
