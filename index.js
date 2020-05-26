@@ -7,6 +7,15 @@ let billboard = {
     h: 100
 }
 
+let phoneDisplay = {
+    language: "",
+    bluetooth: false,
+    x: 850,
+    y: 20,
+    w: 200,
+    h: 340
+}
+
 let bluetoothZone = {
     x: 0,
     y: 0,
@@ -70,9 +79,23 @@ let phone3 = {
 let offsetX, offsetY
 let phones = [phone1, phone2, phone3]
 
-
+/*Images for phone display*/
+let switchOn;
+let switchOff;
+let bluetooth;
+let disconnectedImg;
+let englishImg;
+let turkishImg;
+preload = () => {
+  switchOn = loadImage('https://img.icons8.com/officel/80/000000/switch-on.png');
+  bluetooth = loadImage("https://img.icons8.com/officel/80/000000/bluetooth-2.png");
+  switchOff = loadImage("https://img.icons8.com/officel/80/000000/switch-off.png");
+  disconnectedImg = loadImage("https://img.icons8.com/officel/80/000000/disconnected.png");
+  englishImg = loadImage("https://img.icons8.com/officel/80/000000/great-britain.png");
+  turkishImg = loadImage("https://img.icons8.com/officel/80/000000/turkey.png");
+}
 setup = () => {
-    createCanvas(640, 360)
+    createCanvas(1100, 500)
     phones.forEach(e => e.dist = evaluateDist(e))                                                                 // parse array of phones
     billboard.language = phones.reduce((min, b) => Math.min(min, b.dist), phones[0].dist)       // define language according to the closest phone
     bluetoothZone.x = billboard.x + billboard.w / 2
@@ -90,16 +113,19 @@ evaluateDist = (p) => sqrt(pow((p.x + p.w / 2) - (billboard.x + billboard.w / 2)
 
 
 draw = () => {
-    background(255)
+    background(200)
     phones.forEach(e => draggableObject(e))
 
     stroke(0, 0, 0)
     fill(30, 255, 255)
     ellipse(bluetoothZone.x, bluetoothZone.y, bluetoothZone.w, bluetoothZone.h)
     createBillboard(billboard);
+    createPhoneDisplay(phoneDisplay);
 
     phones.forEach(e => createIphone(e))
-
+    
+    updatePhoneDisplay();
+    updateBillboard();
 }
 
 /**
@@ -117,6 +143,98 @@ let createBillboard = (b) => {
     fill(255, 0, 0)
     text(b.text, b.x + 20, b.y + 20, b.w - 40, b.h - 40)
 
+}
+
+/**
+ * @desc Create design of phone's window
+ * @param d Object (phoneDisplay)
+ */
+let createPhoneDisplay = (d) => {
+    noStroke()
+    fill(0, 0, 0)
+    rect(d.x, d.y, d.w, d.h, 20)
+
+    fill(255, 255, 0)
+    rect(d.x + 2, d.y + 15, d.w - 4, d.h - 25, 15)
+
+}
+
+let updateBillboard = () => {
+    //console.log(billboard.language);
+    switch (billboard.language) {
+        case "english":
+            billboard.text = "My name is Brice"
+            break
+        case "turkish":
+            billboard.text = "benim adım Brice"
+            break
+        case "italian":
+            billboard.text = "Mi chiamo Brice"
+            break
+        default:
+            billboard.text = "COME CLOSER"
+    }
+}
+
+let updatePhoneDisplay = () => {
+    if(phoneDisplay.language != ""){
+        bluetoothDisplay(phoneDisplay.bluetooth, phoneDisplay.language);
+    }else{
+        disconnected();
+    }
+}
+/**
+ * @desc Window where no phone is connected
+ */
+let disconnected = () => {
+    image(disconnectedImg, 910, 150, 80, 80);
+    text("No devices connected", 890, 260)
+}
+
+/**
+ * @desc Window where bluetooth is on
+ * @param state Boolean, language String
+ */
+let bluetoothDisplay = (state, language) => {
+    switch (language) {
+        case "turkish": image(turkishImg, 1000, 40, 40, 40);
+        break;
+        case "english": image(englishImg, 1000, 40, 40, 40);
+        break;
+        default: break;
+    }
+    image(bluetooth, 910, 110, 80, 80);
+
+    if(state)
+        image(switchOn, 910, 210, 80, 80);
+    else{
+        image(switchOff, 910, 210, 80, 80);
+    }
+}
+
+/**
+ * @desc Change the bluetooth state of a phone
+ */
+let changeBluetoothStatus = () => {
+    if(phoneDisplay.language != ""){
+        phones.forEach(e => {
+            if(e.language == phoneDisplay.language){
+                e.bluetooth = !e.bluetooth;
+                phoneDisplay.bluetooth = e.bluetooth;
+                //checkBillboardLanguage(e.language);
+            }
+        })
+    }
+}
+
+let checkBillboardLanguage = (language) => {
+    if(billboard.language == language){
+        console.log('here')
+        phones.sort(compare)
+        if (phones[0].inRange && phones[0].bluetooth) {
+            billboard.language = phones[0].language
+        }
+    }
 }
 
 /**
@@ -206,10 +324,12 @@ let draggableObject = (p) => {
 let mousePressedObjectDrag = (p) => {
     if (mouseX > p.x && mouseX < p.x + p.w && mouseY > p.y && mouseY < p.y + p.h) {
         p.dragging = true
-        console.log(p.language)
 
         offsetX = p.x - mouseX
         offsetY = p.y - mouseY
+
+        phoneDisplay.language = p.language;
+        phoneDisplay.bluetooth = p.bluetooth;
     }
 }
 
@@ -223,23 +343,12 @@ let mouseReleasedObjectDrag = (p) => {
     detectBluetoothArea(p)
 
     phones.sort(compare)
-    if (phones[0].inRange) {
-        billboard.language = phones[0].language
-    }
-
-    switch (billboard.language) {
-        case "english":
-            billboard.text = "My name is Brice"
-            break
-        case "turkish":
-            billboard.text = "benim adım Brice"
-            break
-        case "italian":
-            billboard.text = "Mi chiamo Brice"
-            break
-        default:
-            billboard.text = "COME CLOSER"
-    }
+    for(var i=0; i<3; i++){
+        if(phones[i].inRange && phones[i].bluetooth) {
+            billboard.language = phones[i].language
+            break;
+        }
+    } 
 }
 
 let displayIphone = (p) =>
@@ -261,16 +370,27 @@ let compare = (a, b) => {
     return 0
 }
 
+/**
+ * @desc In order to see if x is between two coordinates
+ * @param a Int
+ * @param b Int
+ * @returns {boolean}
+ */
+let between = (a, b, x) => {
+    if(x >= a && x <= b) return true;
+    else return false
+}
+
 function mousePressed() {
     phones.forEach(e => mousePressedObjectDrag(e))
+
+    //If clicked on switch button
+    if(between(910, 990, mouseX) && between(210, 290, mouseY)){
+        changeBluetoothStatus();
+    }
 }
 function mouseReleased() {
     phones.forEach(e => mouseReleasedObjectDrag(e))
 }
 
 windowResized = () => resizeCanvas(windowWidth, windowHeight)
-
-setup()
-draw()
-windowResized()
-
