@@ -7,15 +7,6 @@ let billboard = {
     h: 100
 }
 
-let phoneDisplay = {
-    language: "",
-    bluetooth: false,
-    x: 850,
-    y: 20,
-    w: 200,
-    h: 340
-}
-
 let bluetoothZone = {
     x: 0,
     y: 0,
@@ -79,21 +70,6 @@ let phone3 = {
 let offsetX, offsetY
 let phones = [phone1, phone2, phone3]
 
-/*Images for phone display*/
-let switchOn;
-let switchOff;
-let bluetooth;
-let disconnectedImg;
-let englishImg;
-let turkishImg;
-preload = () => {
-  switchOn = loadImage('https://img.icons8.com/officel/80/000000/switch-on.png');
-  bluetooth = loadImage("https://img.icons8.com/officel/80/000000/bluetooth-2.png");
-  switchOff = loadImage("https://img.icons8.com/officel/80/000000/switch-off.png");
-  disconnectedImg = loadImage("https://img.icons8.com/officel/80/000000/disconnected.png");
-  englishImg = loadImage("https://img.icons8.com/officel/80/000000/great-britain.png");
-  turkishImg = loadImage("https://img.icons8.com/officel/80/000000/turkey.png");
-}
 setup = () => {
     createCanvas(1100, 500)
     phones.forEach(e => e.dist = evaluateDist(e))                                                                 // parse array of phones
@@ -133,6 +109,13 @@ draw = () => {
  * @param b Object (billboard)
  */
 let createBillboard = (b) => {
+    stroke(55, 71, 79)
+    fill(29, 176, 152);
+    textSize(36);
+    textFont('Staatliches')
+    textAlign(CENTER);
+    text("LAXUX", 320, 20)
+
     noStroke()
     fill(0, 0, 0)
     rect(b.x, b.y, b.w, b.h, 20)
@@ -140,22 +123,10 @@ let createBillboard = (b) => {
     fill(255, 255, 0)
     rect(b.x + 10, b.y + 10, b.w - 20, b.h - 20, 15)
 
+    textSize(12);
+    textFont('Arial')
     fill(255, 0, 0)
     text(b.text, b.x + 20, b.y + 20, b.w - 40, b.h - 40)
-
-}
-
-/**
- * @desc Create design of phone's window
- * @param d Object (phoneDisplay)
- */
-let createPhoneDisplay = (d) => {
-    noStroke()
-    fill(0, 0, 0)
-    rect(d.x, d.y, d.w, d.h, 20)
-
-    fill(255, 255, 0)
-    rect(d.x + 2, d.y + 15, d.w - 4, d.h - 25, 15)
 
 }
 
@@ -172,68 +143,7 @@ let updateBillboard = () => {
             billboard.text = "Mi chiamo Brice"
             break
         default:
-            billboard.text = "COME CLOSER"
-    }
-}
-
-let updatePhoneDisplay = () => {
-    if(phoneDisplay.language != ""){
-        bluetoothDisplay(phoneDisplay.bluetooth, phoneDisplay.language);
-    }else{
-        disconnected();
-    }
-}
-/**
- * @desc Window where no phone is connected
- */
-let disconnected = () => {
-    image(disconnectedImg, 910, 150, 80, 80);
-    text("No devices connected", 890, 260)
-}
-
-/**
- * @desc Window where bluetooth is on
- * @param state Boolean, language String
- */
-let bluetoothDisplay = (state, language) => {
-    switch (language) {
-        case "turkish": image(turkishImg, 1000, 40, 40, 40);
-        break;
-        case "english": image(englishImg, 1000, 40, 40, 40);
-        break;
-        default: break;
-    }
-    image(bluetooth, 910, 110, 80, 80);
-
-    if(state)
-        image(switchOn, 910, 210, 80, 80);
-    else{
-        image(switchOff, 910, 210, 80, 80);
-    }
-}
-
-/**
- * @desc Change the bluetooth state of a phone
- */
-let changeBluetoothStatus = () => {
-    if(phoneDisplay.language != ""){
-        phones.forEach(e => {
-            if(e.language == phoneDisplay.language){
-                e.bluetooth = !e.bluetooth;
-                phoneDisplay.bluetooth = e.bluetooth;
-                //checkBillboardLanguage(e.language);
-            }
-        })
-    }
-}
-
-let checkBillboardLanguage = (language) => {
-    if(billboard.language == language){
-        console.log('here')
-        phones.sort(compare)
-        if (phones[0].inRange && phones[0].bluetooth) {
-            billboard.language = phones[0].language
-        }
+            billboard.text = "COME CLOSER AND TURN ON YOUR BLUETOOTH"
     }
 }
 
