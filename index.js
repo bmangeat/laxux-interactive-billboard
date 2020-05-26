@@ -254,9 +254,9 @@ let mouseReleasedObjectDrag = (p) => {
     detectBluetoothArea(p)
 
     phones.sort(compare)
-    let phoneDetected = false;
-    for(var i=0; i<3; i++){
-        if(phones[i].inRange && phones[i].bluetooth) {
+    let phoneDetected = false
+    for(var i=0; i<phones.length; i++){
+        if(phones[i].inRange && phones[i].bluetooth) { //If the closest phone doesn't have bluetooth turned on
             phoneDetected = true;
             billboard.language = phones[i].language
             break;

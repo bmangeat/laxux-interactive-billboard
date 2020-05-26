@@ -1,4 +1,4 @@
-let phoneDisplay = {
+const phoneDisplay = {
     language: "",
     bluetooth: false,
     x: 850,
@@ -14,6 +14,7 @@ let bluetooth;
 let disconnectedImg;
 let englishImg;
 let turkishImg;
+let italianImg;
 
 let font
 preload = () => {
@@ -23,6 +24,7 @@ preload = () => {
   disconnectedImg = loadImage("https://img.icons8.com/officel/80/000000/disconnected.png");
   englishImg = loadImage("https://img.icons8.com/officel/80/000000/great-britain.png");
   turkishImg = loadImage("https://img.icons8.com/officel/80/000000/turkey.png");
+  italianImg = loadImage("https://img.icons8.com/officel/80/000000/italy.png");
 }
 
 /**
@@ -63,6 +65,8 @@ let bluetoothDisplay = (state, language) => {
         case "turkish": image(turkishImg, 970, 40, 40, 40);
         break;
         case "english": image(englishImg, 970, 40, 40, 40);
+        break;
+        case "italian": image(italianImg, 970, 40, 40, 40);
         break;
         default: break;
     }
