@@ -34,7 +34,7 @@ let createPhoneDisplay = (d) => {
     fill(0, 0, 0)
     rect(d.x, d.y, d.w, d.h, 20)
 
-    fill(255, 255, 0)
+    fill(239, 239, 239)
     rect(d.x + 2, d.y + 15, d.w - 4, d.h - 25, 15)
 
 }
@@ -51,7 +51,7 @@ let updatePhoneDisplay = () => {
  */
 let disconnected = () => {
     image(disconnectedImg, 895, 150, 80, 80);
-    text("No devices connected", 875, 260)
+    text("No device connected", 935, 260)
 }
 
 /**

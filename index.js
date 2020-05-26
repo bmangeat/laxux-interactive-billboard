@@ -109,24 +109,25 @@ draw = () => {
  * @param b Object (billboard)
  */
 let createBillboard = (b) => {
+    noStroke()
+    fill(29, 176, 152)
+    rect(b.x, b.y, b.w, b.h, 5)
+
+    fill(239, 239, 239)
+    rect(b.x + 2.5, b.y + 2.5, b.w - 5, b.h - 5, 5)
+
     stroke(55, 71, 79)
     fill(29, 176, 152);
     textSize(36);
     textFont('Staatliches')
     textAlign(CENTER);
-    text("LAXUX", 320, 20)
+    text("LAXUX", 320, 50)
 
-    noStroke()
-    fill(0, 0, 0)
-    rect(b.x, b.y, b.w, b.h, 20)
-
-    fill(255, 255, 0)
-    rect(b.x + 10, b.y + 10, b.w - 20, b.h - 20, 15)
-
+    noStroke();
     textSize(12);
-    textFont('Arial')
-    fill(255, 0, 0)
-    text(b.text, b.x + 20, b.y + 20, b.w - 40, b.h - 40)
+    textFont('Dosis')
+    fill(55, 71, 79)
+    text(b.text, b.x + b.w/2, b.y + b.h/2 +10)
 
 }
 
@@ -253,12 +254,18 @@ let mouseReleasedObjectDrag = (p) => {
     detectBluetoothArea(p)
 
     phones.sort(compare)
+    let phoneDetected = false;
     for(var i=0; i<3; i++){
         if(phones[i].inRange && phones[i].bluetooth) {
+            phoneDetected = true;
             billboard.language = phones[i].language
             break;
         }
     } 
+
+    if(!phoneDetected){
+        billboard.language = ""
+    }
 }
 
 let displayIphone = (p) =>
