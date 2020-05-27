@@ -6,29 +6,27 @@ let billboard = {
     w: 600,
     h: 100
 }
-
 let bluetoothZone = {
     x: 0,
     y: 0,
     w: 0,
     h: 0,
 }
-
 let phone1 = {
     language: "english",
     bluetooth: false,
     rollover: false,
     dragging: false,
-    x: 20,
+    x: 100,
     y: 270,
     w: 50,
     h: 100,
     dist: 0,
     inRange: false,
     color: {
-        r: 0,
-        v: 0,
-        b: 255
+        r: 51,
+        v: 154,
+        b: 240
     }
 }
 let phone2 = {
@@ -36,25 +34,41 @@ let phone2 = {
     bluetooth: false,
     rollover: false,
     dragging: false,
-    x: 90,
+    x: 250,
     y: 270,
     w: 50,
     h: 100,
     dist: 0,
     inRange: false,
     color: {
-        r: 255,
-        v: 0,
-        b: 0
+        r: 250,
+        v: 82,
+        b: 82
     }
 }
-
 let phone3 = {
     language: "italian",
     bluetooth: false,
     rollover: false,
     dragging: false,
-    x: 160,
+    x: 400,
+    y: 270,
+    w: 50,
+    h: 100,
+    dist: 0,
+    inRange: false,
+    color: {
+        r: 0,
+        v: 255,
+        b: 0
+    }
+}
+let phone4 = {
+    language: "japanese",
+    bluetooth: false,
+    rollover: false,
+    dragging: false,
+    x: 550,
     y: 270,
     w: 50,
     h: 100,
@@ -67,8 +81,10 @@ let phone3 = {
     }
 }
 
+
 let offsetX, offsetY
-let phones = [phone1, phone2, phone3]
+let phones = [phone1, phone2, phone3, phone4]
+
 
 setup = () => {
     createCanvas(1100, 500)
@@ -89,17 +105,18 @@ evaluateDist = (p) => sqrt(pow((p.x + p.w / 2) - (billboard.x + billboard.w / 2)
 
 
 draw = () => {
-    background(200)
+    background(233, 236, 239)
     phones.forEach(e => draggableObject(e))
 
-    stroke(0, 0, 0)
-    fill(30, 255, 255)
+    stroke(51, 154, 240)
+    fill(165, 216, 255)
     ellipse(bluetoothZone.x, bluetoothZone.y, bluetoothZone.w, bluetoothZone.h)
+    createBluetoothLogo()
     createBillboard(billboard);
     createPhoneDisplay(phoneDisplay);
 
     phones.forEach(e => createIphone(e))
-    
+
     updatePhoneDisplay();
     updateBillboard();
 }
@@ -113,7 +130,7 @@ const createBillboard = (b) => {
     fill(29, 176, 152)
     rect(b.x, b.y, b.w, b.h, 5)
 
-    fill(239, 239, 239)
+    fill(248, 249, 250)
     rect(b.x + 2.5, b.y + 2.5, b.w - 5, b.h - 5, 5)
 
     stroke(55, 71, 79)
@@ -124,8 +141,25 @@ const createBillboard = (b) => {
     text("LAXUX", 320, 50)
 
     noStroke();
-    textSize(12);
-    textFont('Dosis')
+    textSize(14);
+
+    switch (billboard.language) {
+        case "english":
+            textFont('Jost')
+            break
+        case "turkish":
+            textFont('Amiri')
+            break
+        case "italian":
+            textFont('Quattrocento Sans')
+            break
+        case "japanese":
+            textFont('Amiri')
+            break
+        default:
+            textFont('Dosis')
+            billboard.text = "COME CLOSER AND TURN ON YOUR BLUETOOTH"
+    }
     fill(55, 71, 79)
     text(b.text, b.x + b.w/2, b.y + b.h/2 +10)
 
@@ -135,26 +169,41 @@ const updateBillboard = () => {
     //console.log(billboard.language);
     switch (billboard.language) {
         case "english":
-            billboard.text = "My name is Brice"
+            billboard.text = "Next train in 5 minutes"
             break
         case "turkish":
-            billboard.text = "benim adım Brice"
+            billboard.text = "Sonraki trende 5 dakika"
             break
         case "italian":
-            billboard.text = "Mi chiamo Brice"
+            billboard.text = "Prossimo treno tra 5 minuti"
+            break
+        case "japanese":
+            billboard.text = "5分後に次の電車"
             break
         default:
             billboard.text = "COME CLOSER AND TURN ON YOUR BLUETOOTH"
     }
 }
 
+const createBluetoothLogo = () => {
+
+    let offsetxx = billboard.x + billboard.w/2
+    let offsetyy = billboard.y + billboard.h*4/3
+
+    stroke(255,255,255)
+    line(offsetxx, 13.5 + offsetyy, 20 + offsetxx, 40.5+ offsetyy)
+    line(20 + offsetxx,40.5 + offsetyy, 10 + offsetxx, 54 + offsetyy)
+    line(10 + offsetxx, 54 + offsetyy, 10 + offsetxx, offsetyy)
+    line(10 + offsetxx, offsetyy, 20 + offsetxx, 13.5 + offsetyy)
+    line(20 + offsetxx, 13.5 + offsetyy, offsetxx, 40.5 + offsetyy)
+}
 /**
  * @desc Create design of iPhone
  * @param p Object (...phone)
  */
 const createIphone = (p) => {
     noStroke()
-    fill(0, 0, 0)
+    fill(52, 58, 64)
     rect(p.x, p.y, p.w, p.h, 8)
 
     // incrust iphone
@@ -188,11 +237,34 @@ const createIphone = (p) => {
 
             strokeWeight(3)
             //strokeCap(SQUARE);
-            stroke(255, 0, 0)
+            stroke(250, 82, 82)
             line(p.x + 7, p.y + 15, p.x + 3 + p.w - 10, p.y + 11 + p.h - 26)
             line(p.x + 3 + p.w - 10, p.y + 15, p.x + 7, p.y + 11 + p.h - 26)
             line(p.x + 6, p.y + p.h / 2, p.x + 3 + p.w - 9, p.y + p.h / 2)
             line(p.x + p.w / 2, p.y + 14, p.x + p.w / 2, p.y + p.h - 14)
+            break
+
+
+        case "italian":
+            noStroke()
+            fill(255, 255, 255)
+            rect(p.x + 2, p.y + 10, p.w - 4, p.h - 20, 4)
+
+            fill(105, 219, 124)
+            rect(p.x + 2, p.y + 10, p.w/3 - 4, p.h - 20, 4, 0, 0, 4)
+
+
+            fill(250, 82, 82)
+            rect(p.x + 2 +2/3*p.w, p.y + 10, p.w/3 - 4, p.h - 20, 0, 4, 4, 0)
+            break
+
+        case "japanese":
+            noStroke()
+            fill(255, 255, 255)
+            rect(p.x + 2, p.y + 10, p.w - 4, p.h - 20, 4)
+
+            fill(250, 82, 82)
+            ellipse(p.x + p.w/2, p.y + p.h/2, 20, 20)
 
 
         default:
@@ -255,23 +327,17 @@ const mouseReleasedObjectDrag = (p) => {
 
     phones.sort(compare)
     let phoneDetected = false
-    for(var i=0; i<phones.length; i++){
+    for(let i=0; i<phones.length; i++){
         if(phones[i].inRange && phones[i].bluetooth) { //If the closest phone doesn't have bluetooth turned on
             phoneDetected = true;
             billboard.language = phones[i].language
             break;
         }
-    } 
+    }
 
     if(!phoneDetected){
         billboard.language = ""
     }
-}
-
-const displayIphone = (p) =>
-{
-
-
 }
 
 /**

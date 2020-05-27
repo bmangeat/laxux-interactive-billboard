@@ -15,16 +15,19 @@ let disconnectedImg;
 let englishImg;
 let turkishImg;
 let italianImg;
+let japanImg;
 
-let font
 preload = () => {
-  switchOn = loadImage('https://img.icons8.com/officel/80/000000/switch-on.png');
-  bluetooth = loadImage("https://img.icons8.com/officel/80/000000/bluetooth-2.png");
-  switchOff = loadImage("https://img.icons8.com/officel/80/000000/switch-off.png");
-  disconnectedImg = loadImage("https://img.icons8.com/officel/80/000000/disconnected.png");
-  englishImg = loadImage("https://img.icons8.com/officel/80/000000/great-britain.png");
-  turkishImg = loadImage("https://img.icons8.com/officel/80/000000/turkey.png");
-  italianImg = loadImage("https://img.icons8.com/officel/80/000000/italy.png");
+    switchOn = loadImage('https://img.icons8.com/officel/80/000000/switch-on.png');
+    bluetooth = loadImage("https://img.icons8.com/officel/80/000000/bluetooth-2.png");
+    switchOff = loadImage("https://img.icons8.com/officel/80/000000/switch-off.png");
+    disconnectedImg = loadImage("https://img.icons8.com/officel/80/000000/disconnected.png");
+    englishImg = loadImage("https://img.icons8.com/officel/80/000000/great-britain.png");
+    turkishImg = loadImage("https://img.icons8.com/officel/80/000000/turkey.png");
+    italianImg = loadImage("https://img.icons8.com/officel/80/000000/italy.png");
+    japanImg = loadImage("https://img.icons8.com/officel/80/000000/japan.png");
+
+
 }
 
 /**
@@ -33,7 +36,7 @@ preload = () => {
  */
 const createPhoneDisplay = (d) => {
     noStroke()
-    fill(0, 0, 0)
+    fill(52, 58, 64)
     rect(d.x, d.y, d.w, d.h, 20)
 
     fill(239, 239, 239)
@@ -42,9 +45,9 @@ const createPhoneDisplay = (d) => {
 }
 
 const updatePhoneDisplay = () => {
-    if(phoneDisplay.language != ""){
+    if (phoneDisplay.language != "") {
         bluetoothDisplay(phoneDisplay.bluetooth, phoneDisplay.language);
-    }else{
+    } else {
         disconnected();
     }
 }
@@ -62,19 +65,26 @@ const disconnected = () => {
  */
 const bluetoothDisplay = (state, language) => {
     switch (language) {
-        case "turkish": image(turkishImg, 970, 40, 40, 40);
-        break;
-        case "english": image(englishImg, 970, 40, 40, 40);
-        break;
-        case "italian": image(italianImg, 970, 40, 40, 40);
-        break;
-        default: break;
+        case "turkish":
+            image(turkishImg, 970, 40, 40, 40);
+            break;
+        case "english":
+            image(englishImg, 970, 40, 40, 40);
+            break;
+        case "italian":
+            image(italianImg, 970, 40, 40, 40);
+            break;
+        case "japanese":
+            image(japanImg, 970, 40, 40, 40);
+            break;
+        default:
+            break;
     }
     image(bluetooth, 895, 110, 80, 80);
 
-    if(state)
+    if (state)
         image(switchOn, 895, 210, 80, 80);
-    else{
+    else {
         image(switchOff, 895, 210, 80, 80);
     }
 }
@@ -83,9 +93,9 @@ const bluetoothDisplay = (state, language) => {
  * @desc Change the bluetooth state of a phone
  */
 const changeBluetoothStatus = () => {
-    if(phoneDisplay.language != ""){
+    if (phoneDisplay.language != "") {
         phones.forEach(e => {
-            if(e.language == phoneDisplay.language){
+            if (e.language == phoneDisplay.language) {
                 e.bluetooth = !e.bluetooth;
                 phoneDisplay.bluetooth = e.bluetooth;
             }
