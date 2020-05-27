@@ -108,7 +108,7 @@ draw = () => {
  * @desc Create design of billboard
  * @param b Object (billboard)
  */
-let createBillboard = (b) => {
+const createBillboard = (b) => {
     noStroke()
     fill(29, 176, 152)
     rect(b.x, b.y, b.w, b.h, 5)
@@ -131,7 +131,7 @@ let createBillboard = (b) => {
 
 }
 
-let updateBillboard = () => {
+const updateBillboard = () => {
     //console.log(billboard.language);
     switch (billboard.language) {
         case "english":
@@ -152,7 +152,7 @@ let updateBillboard = () => {
  * @desc Create design of iPhone
  * @param p Object (...phone)
  */
-let createIphone = (p) => {
+const createIphone = (p) => {
     noStroke()
     fill(0, 0, 0)
     rect(p.x, p.y, p.w, p.h, 8)
@@ -215,10 +215,10 @@ let createIphone = (p) => {
  * @desc Detect if phones are enter in the zone when mouse released
  * @param p dragging phone
  */
-let detectBluetoothArea = (p) => {
+const detectBluetoothArea = (p) => {
     p.inRange = (pow(p.x - bluetoothZone.x, 2) / pow((bluetoothZone.w / 2), 2) + pow(p.y - bluetoothZone.y, 2) / pow((bluetoothZone.h / 2), 2)) <= 1
 }
-let draggableObject = (p) => {
+const draggableObject = (p) => {
     p.rollover = mouseX > p.x && mouseX < p.x + p.w && mouseY > p.y && mouseY < p.y + p.h
 
     if (p.dragging) {
@@ -232,7 +232,7 @@ let draggableObject = (p) => {
  * @desc Determine which phone is clicked
  * @param p selected phone
  */
-let mousePressedObjectDrag = (p) => {
+const mousePressedObjectDrag = (p) => {
     if (mouseX > p.x && mouseX < p.x + p.w && mouseY > p.y && mouseY < p.y + p.h) {
         p.dragging = true
 
@@ -248,7 +248,7 @@ let mousePressedObjectDrag = (p) => {
  * Call when object is released -> determine which phone is closer
  * @param p dragging phone
  */
-let mouseReleasedObjectDrag = (p) => {
+const mouseReleasedObjectDrag = (p) => {
     p.dragging = false
     p.dist = evaluateDist(p)
     detectBluetoothArea(p)
@@ -268,7 +268,7 @@ let mouseReleasedObjectDrag = (p) => {
     }
 }
 
-let displayIphone = (p) =>
+const displayIphone = (p) =>
 {
 
 
@@ -280,7 +280,7 @@ let displayIphone = (p) =>
  * @param b Phone b
  * @returns {number}
  */
-let compare = (a, b) => {
+const compare = (a, b) => {
     if (a.dist > b.dist) return 1
     if (b.dist > a.dist) return -1
 
@@ -293,7 +293,7 @@ let compare = (a, b) => {
  * @param b Int
  * @returns {boolean}
  */
-let between = (a, b, x) => {
+const between = (a, b, x) => {
     if(x >= a && x <= b) return true;
     else return false
 }

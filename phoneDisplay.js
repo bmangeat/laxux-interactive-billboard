@@ -31,7 +31,7 @@ preload = () => {
  * @desc Create design of phone's window
  * @param d Object (phoneDisplay)
  */
-let createPhoneDisplay = (d) => {
+const createPhoneDisplay = (d) => {
     noStroke()
     fill(0, 0, 0)
     rect(d.x, d.y, d.w, d.h, 20)
@@ -41,7 +41,7 @@ let createPhoneDisplay = (d) => {
 
 }
 
-let updatePhoneDisplay = () => {
+const updatePhoneDisplay = () => {
     if(phoneDisplay.language != ""){
         bluetoothDisplay(phoneDisplay.bluetooth, phoneDisplay.language);
     }else{
@@ -51,7 +51,7 @@ let updatePhoneDisplay = () => {
 /**
  * @desc Window where no phone is connected
  */
-let disconnected = () => {
+const disconnected = () => {
     image(disconnectedImg, 895, 150, 80, 80);
     text("No device connected", 935, 260)
 }
@@ -60,7 +60,7 @@ let disconnected = () => {
  * @desc Window where bluetooth is on
  * @param state Boolean, language String
  */
-let bluetoothDisplay = (state, language) => {
+const bluetoothDisplay = (state, language) => {
     switch (language) {
         case "turkish": image(turkishImg, 970, 40, 40, 40);
         break;
@@ -82,7 +82,7 @@ let bluetoothDisplay = (state, language) => {
 /**
  * @desc Change the bluetooth state of a phone
  */
-let changeBluetoothStatus = () => {
+const changeBluetoothStatus = () => {
     if(phoneDisplay.language != ""){
         phones.forEach(e => {
             if(e.language == phoneDisplay.language){
